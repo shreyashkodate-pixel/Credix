@@ -1,7 +1,7 @@
 # SmartLoan Predictor — Decision Register
 
 **Document status:** Living register  
-**Version:** 0.2.0  
+**Version:** 0.3.0  
 **Purpose:** Keep confirmed choices separate from proposals and unresolved questions.
 
 ## 1. Confirmed decisions
@@ -31,6 +31,11 @@
 | D-021 | Use the open Loan Prediction Problem benchmark dataset (Dream Housing Finance). | Audited for open educational redistribution, zero PII, and clean application-time features (resolves O-001). See `docs/data/DATASET_AUDIT.md`. |
 | D-022 | Target variable is `Loan_Status` (binary: 1 = Approved, 0 = Rejected). | Represents origination underwriting outcome; observed historical ratio ~69% approved / ~31% rejected (resolves O-002). |
 | D-023 | Model input schema finalized to 9 features; sensitive attributes (`Gender`, `Married`) excluded for Fair Lending. | Complies with Equal Credit Opportunity Act (ECOA) standards against demographic proxy bias; all 9 features known at application time (resolves O-003). |
+| D-024 | Evaluation baseline uses 5-Fold Stratified CV with ROC-AUC, PR-AUC, minority class F1, and Brier score. | Rigorous evaluation accounting for moderate class imbalance (resolves O-004). |
+| D-025 | Selected Random Forest (150 trees, max_depth 6) with median/mode imputation, standard scaling, and OneHotEncoder. | Highest mean ROC-AUC (0.7639), PR-AUC (0.8569), and 92.2% precision on Rejected class (resolves O-005). |
+| D-026 | Use TreeSHAP for local feature attribution explanations. | Sub-15ms local attribution without slow background sampling (resolves O-006). |
+| D-027 | Display predicted approval probability alongside TreeSHAP factors. | Validated Brier score (0.1513) demonstrates solid probability calibration (resolves O-007). |
+| D-028 | Standardize artifact serialization in `ml/inference/artifacts/` (`model.joblib` and `metadata.json`). | Self-contained, version-controlled metadata ensuring traceability (resolves O-016). |
 
 ## 2. Proposed decisions needing validation
 
@@ -50,10 +55,10 @@
 | O-001 | Which dataset is suitable, licensed, and available for this task? | **Resolved by D-021** | Phase 2 |
 | O-002 | What exactly does the target label represent, and how reliable is it? | **Resolved by D-022** | Phase 2 |
 | O-003 | What fields are available, meaningful, and permitted as model inputs? | **Resolved by D-023** | Phase 2 |
-| O-004 | Which evaluation metrics and acceptance thresholds are defensible? | Open | Phase 3 |
-| O-005 | Which model and preprocessing pipeline should be selected? | Open | Phase 3 |
-| O-006 | Which explanation technique is suitable for the selected model? | Open | Phase 3 |
-| O-007 | Is a probability score valid and appropriately calibrated for display? | Open | Phase 3 |
+| O-004 | Which evaluation metrics and acceptance thresholds are defensible? | **Resolved by D-024** | Phase 3 |
+| O-005 | Which model and preprocessing pipeline should be selected? | **Resolved by D-025** | Phase 3 |
+| O-006 | Which explanation technique is suitable for the selected model? | **Resolved by D-026** | Phase 3 |
+| O-007 | Is a probability score valid and appropriately calibrated for display? | **Resolved by D-027** | Phase 3 |
 | O-008 | Cookie-based sessions or JWT access/refresh tokens? | Open | Before auth implementation |
 | O-009 | Is email verification/password reset in the MVP? | Open | Before auth implementation |
 | O-010 | What admin operations and permissions are needed? | Open | Before admin implementation |
@@ -62,7 +67,7 @@
 | O-013 | What is the backend-to-ML service authentication/network design? | Open | Before deployment |
 | O-014 | Is Render suitable for the ML service given model size, memory, startup, and cost? | Open | Before deployment |
 | O-015 | What performance, availability, and rate-limit targets should be set? | Open | Before release |
-| O-016 | What is the model artifact storage, release, rollback, and retraining process? | Open | Before production deployment |
+| O-016 | What is the model artifact storage, release, rollback, and retraining process? | **Resolved by D-028** | Phase 3 |
 
 ## 4. Decision change policy
 

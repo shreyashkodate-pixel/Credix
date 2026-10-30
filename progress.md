@@ -1,8 +1,8 @@
 # Credix — Project Progress & Session Handoff
 
 **Project Name:** Credix (SmartLoan Predictor)  
-**Current Phase:** Phase 2 Complete (Dataset Audit & Schema Locked) → Transitioning to Phase 3  
-**Baseline Version:** 0.2.0  
+**Current Phase:** Phase 3 Complete (ML Modeling, Pipeline, and Calibration) → Transitioning to Phase 4  
+**Baseline Version:** 0.3.0  
 **Last Updated:** 2026-10-30  
 
 ---
@@ -11,90 +11,87 @@
 
 Credix is an AI/ML-assisted loan outcome prediction web application designed to demonstrate an end-to-end, portfolio-quality software architecture. The platform enables registered users to submit loan-related applicant data, receive model-generated outcome predictions accompanied by clear explanatory factors, and inspect their personal prediction history with strict ownership controls.
 
-Phase 1 (Planning Baseline) and Phase 2 (Dataset Selection, Audit, and Licensing) are **100% complete and approved**. The project has finalized an audited 9-feature model input schema and grounded target label semantics, backed by an explicit Fair Lending policy that purges protected demographic attributes (`Gender`, `Married`). All specifications across API contracts, database design, SRS, and decision registers are synchronized and verified.
+Phase 1 (Planning Baseline), Phase 2 (Dataset Selection, Audit, and Licensing), and Phase 3 (ML Modeling, Pipeline, and Calibration) are **100% complete and verified**. The repository now contains a fully functional, tested, and explainable Random Forest inference pipeline with TreeSHAP feature attributions, packaged according to enterprise MLOps standards.
 
 ---
 
-## 2. Phase 1 Accomplishments
+## 2. Phase 1 Accomplishments (Planning Baseline)
 
-Eight core planning artifacts were established and verified at version `0.1.0`:
-1. **[`PRD.md`](docs/planning/PRD.md)**: Product goals, personas, scope, and non-goals.
-2. **[`SRS.md`](docs/planning/SRS.md)**: 32 functional requirements, 14 non-functional requirements.
-3. **[`SYSTEM_ARCHITECTURE.md`](docs/planning/SYSTEM_ARCHITECTURE.md)**: 4-tier decoupled architecture (Next.js, FastAPI Backend, ML Service, Supabase PostgreSQL).
-4. **[`API_CONTRACT.md`](docs/planning/API_CONTRACT.md)**: Service contracts, correlation IDs, error envelopes.
-5. **[`DATABASE_DESIGN.md`](docs/planning/DATABASE_DESIGN.md)**: Conceptual schema, indexing, and ownership rules.
-6. **[`DECISION_REGISTER.md`](docs/planning/DECISION_REGISTER.md)**: 20 confirmed decisions (`D-001` to `D-020`).
-7. **[`ANTIGRAVITY_HANDOFF_PROMPT.md`](docs/planning/ANTIGRAVITY_HANDOFF_PROMPT.md)**: Agent operating guidelines and boundaries.
-8. Root tooling: [`.gitignore`](.gitignore), [`.editorconfig`](.editorconfig), [`.env.example`](.env.example), [`README.md`](README.md).
+1. Established 8 core planning artifacts (`PRD.md`, `SRS.md`, `SYSTEM_ARCHITECTURE.md`, `API_CONTRACT.md`, `DATABASE_DESIGN.md`, `DECISION_REGISTER.md`, `ANTIGRAVITY_HANDOFF_PROMPT.md`, `README.md`).
+2. Configured root tooling: `.gitignore`, `.editorconfig`, `.env.example`.
 
 ---
 
 ## 3. Phase 2 Accomplishments (Dataset Audit & Schema Locked)
 
-1. **Dataset Selection & Provenance Audit ([`D-021`](docs/planning/DECISION_REGISTER.md))**:
-   - Vetted the canonical Loan Prediction Problem benchmark dataset (Dream Housing Finance).
-   - Confirmed open educational usage rights, public reproducibility, and zero PII exposure.
-2. **Target Label Grounding ([`D-022`](docs/planning/DECISION_REGISTER.md))**:
-   - Confirmed target variable as binary `Loan_Status` (`1` = Approved, `0` = Rejected), representing application-time origination outcomes (~68.7% approved, ~31.3% rejected).
-3. **Data Leakage & Temporal Boundary Verification ([`TD-010`](technical_debt.md))**:
-   - Verified that all candidate features represent application-time knowledge, completely eliminating target leakage risk.
-4. **Responsible AI & Fair Lending Exclusions ([`D-023`](docs/planning/DECISION_REGISTER.md))**:
-   - Formally excluded protected demographic variables (`Gender`, `Married`) from the model input schema in compliance with Equal Credit Opportunity Act (ECOA) principles against proxy discrimination.
-5. **Specification of 9-Feature Input Schema ([`docs/data/DATASET_AUDIT.md`](docs/data/DATASET_AUDIT.md))**:
-   - Locked down field names, types, boundary constraints, units, and UI widgets for: `applicant_income`, `coapplicant_income`, `loan_amount`, `loan_amount_term`, `credit_history`, `education`, `self_employed`, `dependents`, and `property_area`.
-6. **Downstream Synchronization**:
-   - Updated [`API_CONTRACT.md`](docs/planning/API_CONTRACT.md) with typed Pydantic validation rules for `POST /predictions`.
-   - Updated [`DATABASE_DESIGN.md`](docs/planning/DATABASE_DESIGN.md) for `prediction_records.inputs` JSONB snapshot structure.
-   - Updated [`SRS.md`](docs/planning/SRS.md) requirements `FR-008` and `FR-009`.
-   - Updated [`technical_debt.md`](technical_debt.md) marking `TD-010` as Resolved.
+1. Vetted open benchmark dataset in [`docs/data/DATASET_AUDIT.md`](docs/data/DATASET_AUDIT.md) (`D-021`).
+2. Grounded binary target `Loan_Status` (`1` = Approved, `0` = Rejected) (`D-022`).
+3. Enforced Fair Lending policy by excluding demographic attributes (`Gender`, `Married`) (`D-023`).
+4. Locked the 9-feature model input schema and synchronized API contracts and database specifications.
+5. Acquired and validated raw dataset (`data/raw/train.csv`).
 
 ---
 
-## 4. Current Project State
+## 4. Phase 3 Accomplishments (ML Modeling, Pipeline & Calibration)
 
-- **Baseline Version:** `0.2.0`
-- **Application Code:** Not started (intentional).
-- **ML Model:** Not trained (Phase 3 priority).
-- **Dataset Audit:** Complete and documented in [`docs/data/DATASET_AUDIT.md`](docs/data/DATASET_AUDIT.md).
-- **Git Working Tree:** Clean on branch `main`.
-
----
-
-## 5. Phase 3 Agenda (ML Modeling, Pipeline, and Calibration)
-
-The immediate next objective is **Phase 3: ML Modeling, Pipeline, and Calibration**:
-
-1. **Data Acquisition & Ingestion Pipeline**:
-   - Create reproducible script to download and verify the raw dataset into `data/raw/`.
-   - Add appropriate `.gitignore` rules for local raw data caching.
-2. **Exploratory Data Analysis (EDA) & Preprocessing**:
-   - Clean missing value imputation (median for financials, mode for categoricals).
-   - Sklearn pipeline construction (One-Hot Encoding for categorical features, StandardScaler/RobustScaler for numeric features).
-3. **Model Exploration & Baseline Benchmarking**:
-   - Train baseline models: Logistic Regression (interpretable linear baseline), Random Forest, and LightGBM/XGBoost.
-   - Evaluate using stratified k-fold cross-validation with PR-AUC, ROC-AUC, F1-Score, Precision, and Recall on the minority `Rejected` class (`O-004`, `O-005`).
-4. **Probability Calibration Assessment ([`O-007`](docs/planning/DECISION_REGISTER.md), [`TD-012`](technical_debt.md))**:
-   - Compute Brier score and plot calibration curves.
-   - Determine whether calibrated probabilities can be safely displayed to end users.
-5. **Explainability Integration ([`O-006`](docs/planning/DECISION_REGISTER.md), [`TD-011`](technical_debt.md))**:
-   - Benchmark TreeSHAP generation latency to ensure sub-100ms synchronous inference.
-6. **Artifact Packaging & Serialization**:
-   - Package trained pipeline, feature list, and metadata into serialized artifacts (`model.joblib`) ready for the ML inference service.
+1. **Enterprise MLOps Directory Structure**:
+   - Structured `ml/` separating offline training (`ml/training/`) from production inference (`ml/inference/`), with shared core logic (`ml/pipeline/`) and constants (`ml/common/`).
+2. **Reproducible Preprocessing Pipeline**:
+   - Built `ml/pipeline/pipeline.py` implementing `ColumnTransformer` with median/mode imputation, `StandardScaler`, and `OneHotEncoder`.
+3. **Cross-Validation & Model Benchmarking**:
+   - Evaluated 3 candidate models on 5-fold stratified cross-validation:
+     - *Logistic Regression:* ROC-AUC 0.7492, PR-AUC 0.8346, Brier 0.1539.
+     - *Random Forest (Champion):* **ROC-AUC 0.7639**, **PR-AUC 0.8569**, **Precision (Rejected) 92.2%**, **Brier 0.1513**.
+     - *HistGradientBoosting:* ROC-AUC 0.7386, PR-AUC 0.8367.
+   - Selected **Random Forest Classifier** (`D-025`) as champion.
+4. **Probability Calibration Assessment**:
+   - Validated Brier score loss of `0.1513` in CV and `0.1219` on full dataset (`D-027`, `TD-012`). Approved displaying calibrated approval probabilities.
+5. **Local TreeSHAP Explainability**:
+   - Integrated `shap.TreeExplainer` in `ml/inference/model/predictor.py` (`D-026`, `TD-011`). Computes local feature attributions analytically in <15ms.
+6. **Artifact Serialization & Packaging**:
+   - Exported fitted pipeline to `ml/inference/artifacts/model.joblib` and `metadata.json` (`D-028`).
+7. **Production Inference Service**:
+   - Built and tested `ml/inference/services/prediction_service.py` and FastAPI router `ml/inference/api/routes.py`.
+   - Verified end-to-end sample predictions for both approved and rejected applicant profiles.
 
 ---
 
-## 6. Quick Verification Commands for Next Session
+## 5. Current Project State
 
-When starting the next session, run:
+- **Baseline Version:** `0.3.0`
+- **Application Backend Code:** Not started (Phase 4 priority).
+- **ML Subsystem:** 100% complete, tested, and self-contained in `ml/`.
+- **Git Working Tree:** Ready for commit.
+
+---
+
+## 6. Phase 4 Agenda (Backend API and Database Implementation)
+
+The immediate next objective is **Phase 4: Backend API and Database Implementation**:
+
+1. **Database Schema & Migrations (`P-003`, `O-011`, `O-012`)**:
+   - Setup SQLAlchemy / SQLModel with Alembic for Supabase PostgreSQL.
+   - Create migrations for `users`, `prediction_records`, and `audit_events`.
+2. **Backend Authentication & Authorization (`O-008`, `O-009`, `TD-003`)**:
+   - Implement password hashing (Argon2 / bcrypt) and JWT authentication.
+   - Implement ownership-scoped prediction history access (`D-016`).
+3. **Backend-to-ML Service Orchestration (`D-014`, `P-006`)**:
+   - Implement backend client to invoke the ML inference service (or collocated loader).
+   - Atomic persistence: successful inference + input snapshot persisted in PostgreSQL.
+4. **API Endpoints (`P-002`, `P-005`, `TD-013`)**:
+   - Implement `/auth/register`, `/auth/login`, `/auth/logout`, `/users/me`.
+   - Implement `POST /predictions`, `GET /predictions/history`, `GET /predictions/history/{id}`.
+   - Implement `/health` and admin metrics.
+
+---
+
+## 7. Quick Verification Commands for Next Session
 
 ```bash
-# Check branch and working tree
+# Verify virtual environment and ML inference test
+source .venv/bin/activate
+python ml/training/scripts/evaluate.py
+
+# Check git status
 git status
-
-# Inspect recent commit history
-git log -n 5 --oneline
-
-# Verify all planning and data audit documents exist
-ls -la docs/planning/
-ls -la docs/data/
 ```

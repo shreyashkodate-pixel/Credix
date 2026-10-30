@@ -1,0 +1,114 @@
+{
+  "model_version": "1.0.0",
+  "champion_algorithm": "RandomForest",
+  "trained_at": "2026-10-30T13:45:10.992243+00:00",
+  "total_training_samples": 614,
+  "features": {
+    "all_9_features": [
+      "applicant_income",
+      "coapplicant_income",
+      "loan_amount",
+      "loan_amount_term",
+      "credit_history",
+      "education",
+      "self_employed",
+      "dependents",
+      "property_area"
+    ],
+    "numerical": [
+      "applicant_income",
+      "coapplicant_income",
+      "loan_amount",
+      "loan_amount_term"
+    ],
+    "categorical": [
+      "credit_history",
+      "education",
+      "self_employed",
+      "dependents",
+      "property_area"
+    ]
+  },
+  "target_mapping": {
+    "1": "Approved",
+    "0": "Rejected"
+  },
+  "fair_lending_excluded_demographics": [
+    "Gender",
+    "Married"
+  ],
+  "cross_validation_results": {
+    "LogisticRegression": {
+      "accuracy_mean": 0.8078501932560309,
+      "accuracy_std": 0.023089608764444245,
+      "roc_auc_mean": 0.7492311472497232,
+      "roc_auc_std": 0.013053317267401113,
+      "pr_auc_mean": 0.8346304422332894,
+      "pr_auc_std": 0.0052675070405825836,
+      "f1_macro_mean": 0.7297202942854267,
+      "f1_macro_std": 0.03283263039343332,
+      "f1_rejected_mean": 0.5844136202575404,
+      "f1_rejected_std": 0.05081199708180135,
+      "precision_rejected_mean": 0.9021534227726178,
+      "precision_rejected_std": 0.06454403635015185,
+      "recall_rejected_mean": 0.43279352226720647,
+      "recall_rejected_std": 0.04362044184612522,
+      "brier_score_mean": 0.15390294901858123,
+      "brier_score_std": 0.01316864898676694
+    },
+    "RandomForest": {
+      "accuracy_mean": 0.8111022257763562,
+      "accuracy_std": 0.01707949021890443,
+      "roc_auc_mean": 0.7639265584776421,
+      "roc_auc_std": 0.01873779560597967,
+      "pr_auc_mean": 0.8568750142224877,
+      "pr_auc_std": 0.018861333592294433,
+      "f1_macro_mean": 0.732714367866439,
+      "f1_macro_std": 0.027378923796599845,
+      "f1_rejected_mean": 0.5879861880406345,
+      "f1_rejected_std": 0.04435187280773789,
+      "precision_rejected_mean": 0.9215978672170623,
+      "precision_rejected_std": 0.029007717398889684,
+      "recall_rejected_mean": 0.43279352226720647,
+      "recall_rejected_std": 0.04362044184612522,
+      "brier_score_mean": 0.15128730535269547,
+      "brier_score_std": 0.009665717129294317
+    },
+    "HistGradientBoosting": {
+      "accuracy_mean": 0.7702785552445688,
+      "accuracy_std": 0.03334223968269753,
+      "roc_auc_mean": 0.73855789549288,
+      "roc_auc_std": 0.043251006582979167,
+      "pr_auc_mean": 0.8366963508511785,
+      "pr_auc_std": 0.03092048360960228,
+      "f1_macro_mean": 0.699105025901194,
+      "f1_macro_std": 0.03275061972693058,
+      "f1_rejected_mean": 0.5533604508583286,
+      "f1_rejected_std": 0.04325393723197284,
+      "precision_rejected_mean": 0.7297674760590361,
+      "precision_rejected_std": 0.11694470261047885,
+      "recall_rejected_mean": 0.45371120107962215,
+      "recall_rejected_std": 0.04763775312856129,
+      "brier_score_mean": 0.17311745301913906,
+      "brier_score_std": 0.0177757653165983
+    }
+  },
+  "champion_cv_metrics": {
+    "accuracy_mean": 0.8111022257763562,
+    "accuracy_std": 0.01707949021890443,
+    "roc_auc_mean": 0.7639265584776421,
+    "roc_auc_std": 0.01873779560597967,
+    "pr_auc_mean": 0.8568750142224877,
+    "pr_auc_std": 0.018861333592294433,
+    "f1_macro_mean": 0.732714367866439,
+    "f1_macro_std": 0.027378923796599845,
+    "f1_rejected_mean": 0.5879861880406345,
+    "f1_rejected_std": 0.04435187280773789,
+    "precision_rejected_mean": 0.9215978672170623,
+    "precision_rejected_std": 0.029007717398889684,
+    "recall_rejected_mean": 0.43279352226720647,
+    "recall_rejected_std": 0.04362044184612522,
+    "brier_score_mean": 0.15128730535269547,
+    "brier_score_std": 0.009665717129294317
+  }
+}

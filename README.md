@@ -29,9 +29,9 @@ Credix is an AI/ML-assisted loan outcome prediction web application designed to 
 
 ## Current Project Status and Roadmap
 
-The project is currently at the completion of **Phase 2 (Dataset Selection, Audit, and Licensing)**. 
+The project is currently at the completion of **Phase 3 (ML Modeling, Pipeline, and Calibration)**. 
 
-> **Important**: Application source code and model training **have not started** (deliberately scheduled for Phase 3+).
+> **Current State**: The ML training and inference subsystem is fully implemented, verified, and packaged under [`ml/`](ml/). Backend API and database implementation will begin in Phase 4.
 
 ### Phased Roadmap
 
@@ -39,9 +39,9 @@ The project is currently at the completion of **Phase 2 (Dataset Selection, Audi
    - PRD, SRS, architecture, API contracts, database design, and decision register established.
 2. **Phase 2: Dataset Selection, Audit, and Licensing** *(Complete — Baseline Approved, v0.2.0)*
    - Open loan dataset vetted, target label grounded, Fair Lending exclusions applied, and 9-feature input schema locked.
-3. **Phase 3: ML Modeling, Pipeline, and Calibration** *(Upcoming)*
-   - Reproducible preprocessing, baseline training, evaluation, explainability method, and artifact packaging.
-4. **Phase 4: Backend API and Database Implementation**
+3. **Phase 3: ML Modeling, Pipeline, and Calibration** *(Complete — Baseline Approved, v0.3.0)*
+   - Enterprise MLOps structure established, champion Random Forest model trained, TreeSHAP explainability integrated, and artifacts packaged.
+4. **Phase 4: Backend API and Database Implementation** *(Upcoming)*
    - Supabase schema migrations, authentication, authorization, and ML service orchestration.
 5. **Phase 5: Frontend UI and Integration**
    - Responsive user interface, prediction workflows, history dashboard, and admin views.
@@ -50,10 +50,11 @@ The project is currently at the completion of **Phase 2 (Dataset Selection, Audi
 
 ---
 
-## Project Tracking
+## Project Tracking & Subsystems
 
 - [`progress.md`](progress.md) — Current sprint/phase progress, completed deliverables, and next-session agenda.
 - [`technical_debt.md`](technical_debt.md) — Living register of deferred architectural choices, provisional items, and risks.
+- [`ml/README.md`](ml/README.md) — Machine learning subsystem architecture, benchmark results, and inference service quickstart.
 
 ---
 
