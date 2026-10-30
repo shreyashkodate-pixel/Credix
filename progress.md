@@ -1,8 +1,8 @@
 # Credix — Project Progress & Session Handoff
 
 **Project Name:** Credix (SmartLoan Predictor)  
-**Current Phase:** Phase 1 Complete (Planning Baseline Approved) → Transitioning to Phase 2  
-**Baseline Version:** 0.1.0  
+**Current Phase:** Phase 2 Complete (Dataset Audit & Schema Locked) → Transitioning to Phase 3  
+**Baseline Version:** 0.2.0  
 **Last Updated:** 2026-10-30  
 
 ---
@@ -11,66 +11,79 @@
 
 Credix is an AI/ML-assisted loan outcome prediction web application designed to demonstrate an end-to-end, portfolio-quality software architecture. The platform enables registered users to submit loan-related applicant data, receive model-generated outcome predictions accompanied by clear explanatory factors, and inspect their personal prediction history with strict ownership controls.
 
-All Phase 1 planning documents have been authored, verified for internal consistency, approved, and committed to version control (`d53658e`). Repository root configuration is in place, clean, and ready for Phase 2 (Dataset Selection, Audit, and Licensing).
+Phase 1 (Planning Baseline) and Phase 2 (Dataset Selection, Audit, and Licensing) are **100% complete and approved**. The project has finalized an audited 9-feature model input schema and grounded target label semantics, backed by an explicit Fair Lending policy that purges protected demographic attributes (`Gender`, `Married`). All specifications across API contracts, database design, SRS, and decision registers are synchronized and verified.
 
 ---
 
 ## 2. Phase 1 Accomplishments
 
-### 2.1 Planning Baseline Approved (`docs/planning/`)
 Eight core planning artifacts were established and verified at version `0.1.0`:
-
-1. **[`PRD.md`](docs/planning/PRD.md)**: Product Requirements Document outlining goals, personas (Registered User, Administrator), user journeys, non-goals (no legal lending decisions, no causal claims), and acceptance criteria.
-2. **[`SRS.md`](docs/planning/SRS.md)**: Software Requirements Specification detailing 32 Functional Requirements (`FR-001` through `FR-032`), 14 Non-Functional Requirements (`NFR-001` through `NFR-014`), and explicit TBD boundaries.
-3. **[`SYSTEM_ARCHITECTURE.md`](docs/planning/SYSTEM_ARCHITECTURE.md)**: Multi-service system architecture isolating Frontend (Next.js/Vercel), Backend API (FastAPI/Render), ML Inference (FastAPI/Render - tentative), and Database (PostgreSQL/Supabase).
-4. **[`API_CONTRACT.md`](docs/planning/API_CONTRACT.md)**: Proposed endpoint specifications, request/response contracts, bounded pagination, correlation IDs, and error envelopes.
-5. **[`DATABASE_DESIGN.md`](docs/planning/DATABASE_DESIGN.md)**: Conceptual schema for `users`, `prediction_records`, and `audit_events`, indexing strategy, and ownership scoping.
-6. **[`DECISION_REGISTER.md`](docs/planning/DECISION_REGISTER.md)**: Living register tracking 20 Confirmed Decisions (`D-001` to `D-020`), 6 Proposals (`P-001` to `P-006`), and 16 Open Decisions (`O-001` to `O-016`).
-7. **[`ANTIGRAVITY_HANDOFF_PROMPT.md`](docs/planning/ANTIGRAVITY_HANDOFF_PROMPT.md)**: Handoff prompt and operating rules for Google Antigravity.
-8. **[`docs/planning/README.md`](docs/planning/README.md)**: Planning package index and status caveats.
-
-### 2.2 Repository Root Setup & Tooling
-The following repository configuration files were created and verified:
-
-1. **[`.gitignore`](.gitignore)**: Comprehensive ignore rules for Python bytecode, virtual environments (`.venv`), testing/linter caches (`pytest`, `mypy`, `ruff`), Node.js artifacts (`node_modules/`, `.next/`), OS files (`.DS_Store`), and runtime environment files (`.env*`), while strictly preserving `.env.example` templates.
-2. **[`.env.example`](.env.example)**: Shared root template documenting provisional variables with placeholders and explicit security warnings.
-3. **[`README.md`](README.md)**: High-level project README covering purpose, limitations, technology stack, phased roadmap, documentation links, and security rules.
-4. **[`.editorconfig`](.editorconfig)**: Standard formatting baseline across Markdown, Python (4-space indent), and TypeScript/JavaScript/JSON (2-space indent) with UTF-8 and LF line endings.
+1. **[`PRD.md`](docs/planning/PRD.md)**: Product goals, personas, scope, and non-goals.
+2. **[`SRS.md`](docs/planning/SRS.md)**: 32 functional requirements, 14 non-functional requirements.
+3. **[`SYSTEM_ARCHITECTURE.md`](docs/planning/SYSTEM_ARCHITECTURE.md)**: 4-tier decoupled architecture (Next.js, FastAPI Backend, ML Service, Supabase PostgreSQL).
+4. **[`API_CONTRACT.md`](docs/planning/API_CONTRACT.md)**: Service contracts, correlation IDs, error envelopes.
+5. **[`DATABASE_DESIGN.md`](docs/planning/DATABASE_DESIGN.md)**: Conceptual schema, indexing, and ownership rules.
+6. **[`DECISION_REGISTER.md`](docs/planning/DECISION_REGISTER.md)**: 20 confirmed decisions (`D-001` to `D-020`).
+7. **[`ANTIGRAVITY_HANDOFF_PROMPT.md`](docs/planning/ANTIGRAVITY_HANDOFF_PROMPT.md)**: Agent operating guidelines and boundaries.
+8. Root tooling: [`.gitignore`](.gitignore), [`.editorconfig`](.editorconfig), [`.env.example`](.env.example), [`README.md`](README.md).
 
 ---
 
-## 3. Current Project State
+## 3. Phase 2 Accomplishments (Dataset Audit & Schema Locked)
 
+1. **Dataset Selection & Provenance Audit ([`D-021`](docs/planning/DECISION_REGISTER.md))**:
+   - Vetted the canonical Loan Prediction Problem benchmark dataset (Dream Housing Finance).
+   - Confirmed open educational usage rights, public reproducibility, and zero PII exposure.
+2. **Target Label Grounding ([`D-022`](docs/planning/DECISION_REGISTER.md))**:
+   - Confirmed target variable as binary `Loan_Status` (`1` = Approved, `0` = Rejected), representing application-time origination outcomes (~68.7% approved, ~31.3% rejected).
+3. **Data Leakage & Temporal Boundary Verification ([`TD-010`](technical_debt.md))**:
+   - Verified that all candidate features represent application-time knowledge, completely eliminating target leakage risk.
+4. **Responsible AI & Fair Lending Exclusions ([`D-023`](docs/planning/DECISION_REGISTER.md))**:
+   - Formally excluded protected demographic variables (`Gender`, `Married`) from the model input schema in compliance with Equal Credit Opportunity Act (ECOA) principles against proxy discrimination.
+5. **Specification of 9-Feature Input Schema ([`docs/data/DATASET_AUDIT.md`](docs/data/DATASET_AUDIT.md))**:
+   - Locked down field names, types, boundary constraints, units, and UI widgets for: `applicant_income`, `coapplicant_income`, `loan_amount`, `loan_amount_term`, `credit_history`, `education`, `self_employed`, `dependents`, and `property_area`.
+6. **Downstream Synchronization**:
+   - Updated [`API_CONTRACT.md`](docs/planning/API_CONTRACT.md) with typed Pydantic validation rules for `POST /predictions`.
+   - Updated [`DATABASE_DESIGN.md`](docs/planning/DATABASE_DESIGN.md) for `prediction_records.inputs` JSONB snapshot structure.
+   - Updated [`SRS.md`](docs/planning/SRS.md) requirements `FR-008` and `FR-009`.
+   - Updated [`technical_debt.md`](technical_debt.md) marking `TD-010` as Resolved.
+
+---
+
+## 4. Current Project State
+
+- **Baseline Version:** `0.2.0`
 - **Application Code:** Not started (intentional).
-- **Dataset:** Not acquired/audited (Phase 2 priority).
 - **ML Model:** Not trained (Phase 3 priority).
-- **Git Working Tree:** Clean on branch `main` (`d53658e`).
-- **Dependencies Installed:** 0 (clean slate).
+- **Dataset Audit:** Complete and documented in [`docs/data/DATASET_AUDIT.md`](docs/data/DATASET_AUDIT.md).
+- **Git Working Tree:** Clean on branch `main`.
 
 ---
 
-## 4. Phase 2 Agenda (Next Session Plan)
+## 5. Phase 3 Agenda (ML Modeling, Pipeline, and Calibration)
 
-The immediate next objective is **Phase 2: Dataset Selection, Audit, and Licensing**:
+The immediate next objective is **Phase 3: ML Modeling, Pipeline, and Calibration**:
 
-1. **Dataset Identification & License Audit (O-001)**:
-   - Identify candidate open datasets (e.g., LendingClub derivative, Kaggle Loan Prediction, Home Credit).
-   - Verify license terms for open-source / portfolio demo redistribution.
-2. **Target Label Audit (O-002)**:
-   - Clarify the precise semantics of the target variable (e.g., approved vs. rejected, fully paid vs. default/charged-off).
-   - Ensure the target is a defensible proxy for the application's user-facing outcome.
-3. **Inference-Time Feature Availability (O-003)**:
-   - Audit candidate features to prevent target leakage (ensure all features are known at loan application time).
-   - Eliminate redundant, proxy-discriminatory, or uncollectible fields.
-4. **Input Schema Finalization**:
-   - Define exact data types, valid ranges, categorical sets, and nullability constraints.
-   - Update `API_CONTRACT.md` and `DATABASE_DESIGN.md` with finalized field definitions.
-5. **Update Planning Documentation**:
-   - Transition resolved open items (`O-001`, `O-002`, `O-003`) into confirmed decisions in `DECISION_REGISTER.md`.
+1. **Data Acquisition & Ingestion Pipeline**:
+   - Create reproducible script to download and verify the raw dataset into `data/raw/`.
+   - Add appropriate `.gitignore` rules for local raw data caching.
+2. **Exploratory Data Analysis (EDA) & Preprocessing**:
+   - Clean missing value imputation (median for financials, mode for categoricals).
+   - Sklearn pipeline construction (One-Hot Encoding for categorical features, StandardScaler/RobustScaler for numeric features).
+3. **Model Exploration & Baseline Benchmarking**:
+   - Train baseline models: Logistic Regression (interpretable linear baseline), Random Forest, and LightGBM/XGBoost.
+   - Evaluate using stratified k-fold cross-validation with PR-AUC, ROC-AUC, F1-Score, Precision, and Recall on the minority `Rejected` class (`O-004`, `O-005`).
+4. **Probability Calibration Assessment ([`O-007`](docs/planning/DECISION_REGISTER.md), [`TD-012`](technical_debt.md))**:
+   - Compute Brier score and plot calibration curves.
+   - Determine whether calibrated probabilities can be safely displayed to end users.
+5. **Explainability Integration ([`O-006`](docs/planning/DECISION_REGISTER.md), [`TD-011`](technical_debt.md))**:
+   - Benchmark TreeSHAP generation latency to ensure sub-100ms synchronous inference.
+6. **Artifact Packaging & Serialization**:
+   - Package trained pipeline, feature list, and metadata into serialized artifacts (`model.joblib`) ready for the ML inference service.
 
 ---
 
-## 5. Quick Verification Commands for Next Session
+## 6. Quick Verification Commands for Next Session
 
 When starting the next session, run:
 
@@ -79,9 +92,9 @@ When starting the next session, run:
 git status
 
 # Inspect recent commit history
-git log -n 3 --oneline
+git log -n 5 --oneline
 
-# Verify all planning documents exist and are intact
+# Verify all planning and data audit documents exist
 ls -la docs/planning/
+ls -la docs/data/
 ```
-

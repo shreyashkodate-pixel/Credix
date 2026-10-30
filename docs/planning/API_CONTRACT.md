@@ -1,8 +1,8 @@
 # SmartLoan Predictor — API Contract Draft
 
-**Document status:** Draft; proposed endpoints only  
-**Version:** 0.1.0  
-**Phase:** 1 — Planning and Requirements
+**Document status:** Updated specification; endpoints and finalized Phase 2 input schema  
+**Version:** 0.2.0  
+**Phase:** 2 — Dataset Selection, Audit, and Licensing (Schema Approved)
 
 ## 1. Purpose and status
 
@@ -47,24 +47,45 @@ The final admin operations, rate limits, pagination parameters, and authenticati
 
 ML endpoints should not be exposed as an unrestricted public prediction API. Protect the service using private networking where available and/or service-to-service authentication.
 
-## 5. Proposed prediction request
+## 5. Confirmed prediction request schema
 
-The final fields are **TBD pending dataset audit**. The following is a structural example only, not a final schema:
+The model input schema was finalized in Phase 2 ([`docs/data/DATASET_AUDIT.md`](../data/DATASET_AUDIT.md)) and approved under [`D-023`](DECISION_REGISTER.md). Demographic attributes (`gender`, `married`) are strictly excluded for Fair Lending compliance.
+
+### 5.1 Request Body (`POST /predictions`)
 
 ```json
 {
-  "input": {
-    "field_name_from_audited_dataset": "example_value"
-  }
+  "applicant_income": 5000.0,
+  "coapplicant_income": 1500.0,
+  "loan_amount": 120.0,
+  "loan_amount_term": 360,
+  "credit_history": 1,
+  "education": "Graduate",
+  "self_employed": "No",
+  "dependents": "0",
+  "property_area": "Semiurban"
 }
 ```
 
+### 5.2 Field Validation Rules (Backend Pydantic Model)
+
+| Field | Type | Validation Rules | Error Code / Message |
+|---|---|---|---|
+| `applicant_income` | Float | `> 0.0` | `Must be greater than 0` |
+| `coapplicant_income` | Float | `>= 0.0` (defaults to 0.0) | `Must be greater than or equal to 0` |
+| `loan_amount` | Float | `> 0.0` (in thousands of dollars) | `Must be greater than 0` |
+| `loan_amount_term` | Int | Value in `[12, 36, 60, 120, 180, 240, 300, 360, 480]` | `Invalid loan term duration` |
+| `credit_history` | Int | Value in `[0, 1]` | `Must be 1 (meets criteria) or 0 (does not meet)` |
+| `education` | String | Value in `["Graduate", "Not Graduate"]` | `Must be 'Graduate' or 'Not Graduate'` |
+| `self_employed` | String | Value in `["Yes", "No"]` | `Must be 'Yes' or 'No'` |
+| `dependents` | String | Value in `["0", "1", "2", "3+"]` | `Must be '0', '1', '2', or '3+'` |
+| `property_area` | String | Value in `["Urban", "Semiurban", "Rural"]` | `Must be 'Urban', 'Semiurban', or 'Rural'` |
+
 Rules:
-- Do not retain placeholder fields in production code.
-- The final schema must define each field's name, type, unit, allowed values/range, nullability, and validation.
-- Frontend validation is for usability; backend validation is authoritative.
-- Do not collect fields that the model does not need.
-- Do not include a user ID in the body as an authorization mechanism.
+- Protected demographic fields (`gender`, `married`, `race`, etc.) are prohibited. The backend must ignore or reject unexpected demographic fields.
+- Frontend validation is provided for user feedback; backend Pydantic validation is strictly authoritative.
+- Failed validation returns `422 Unprocessable Entity` with field-level details.
+- User ID is derived from the authenticated session/token, never accepted in the request body.
 
 ## 6. Proposed prediction response
 

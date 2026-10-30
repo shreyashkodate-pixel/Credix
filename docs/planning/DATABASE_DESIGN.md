@@ -1,7 +1,7 @@
 # SmartLoan Predictor — Database Design Draft
 
-**Document status:** Conceptual draft; schema not finalized  
-**Version:** 0.1.0  
+**Document status:** Updated conceptual schema; Phase 2 input structure locked  
+**Version:** 0.2.0  
 **Database:** PostgreSQL hosted by Supabase
 
 ## 1. Design principles
@@ -33,18 +33,18 @@ Do not expose `password_hash` or authentication internals in API responses. Emai
 ### 2.2 `prediction_records`
 Purpose: persist successful model predictions for user history and traceability.
 
-Proposed fields:
-- `id` — primary key.
-- `user_id` — foreign key to `users.id`, not nullable for user-submitted predictions.
-- `created_at` — server-generated timestamp.
-- `model_version` — version of the model artifact used.
-- `outcome` — model-defined target label.
-- `probability` — nullable; include only if validated and useful.
-- `explanation` — structured JSON or normalized related records, decision TBD.
-- `input_snapshot` — JSON or typed columns, depending on final input schema and privacy review.
-- `request_id` — optional correlation/idempotency reference, with appropriate constraints if adopted.
+Fields:
+- `id` — primary key (UUID candidate `P-004`).
+- `user_id` — foreign key to `users.id`, not nullable; strictly enforces user ownership.
+- `created_at` — server-generated timestamp (`timestamptz`).
+- `model_version` — version of the model artifact used (e.g. `1.0.0`).
+- `outcome` — target outcome label (`Approved` or `Rejected`, mapped from binary model prediction `1`/`0`).
+- `probability` — numeric nullable; populated only when calibrated probability is validated (`D-018`).
+- `explanation` — structured JSONB containing the attribution method (`TreeSHAP`) and factor ranking.
+- `input_snapshot` — structured JSONB containing the audited 9 application inputs (`applicant_income`, `coapplicant_income`, `loan_amount`, `loan_amount_term`, `credit_history`, `education`, `self_employed`, `dependents`, `property_area`). Excludes demographic attributes (`gender`, `married`) per Fair Lending policy (`D-023`).
+- `request_id` — correlation/idempotency reference for end-to-end tracing.
 
-Only successfully completed predictions should be stored as successful prediction records. The exact policy for storing failed attempts or operational failures is TBD; avoid retaining raw sensitive inputs in error logs.
+Only successfully completed predictions are persisted. The ML inference output and input snapshot are atomically committed by the backend. Raw payloads of failed attempts or operational exceptions are not written to this table.
 
 ### 2.3 `audit_events` (proposed)
 Purpose: record selected security-sensitive administrative actions and relevant system events.

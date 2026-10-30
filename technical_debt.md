@@ -1,9 +1,9 @@
 # Credix — Technical Debt & Architectural Deferred Items
 
 **Document Status:** Living Register  
-**Baseline Version:** 0.1.0  
+**Baseline Version:** 0.2.0  
 **Last Updated:** 2026-10-30  
-**Related Documents:** [`docs/planning/DECISION_REGISTER.md`](docs/planning/DECISION_REGISTER.md), [`docs/planning/SYSTEM_ARCHITECTURE.md`](docs/planning/SYSTEM_ARCHITECTURE.md)
+**Related Documents:** [`docs/planning/DECISION_REGISTER.md`](docs/planning/DECISION_REGISTER.md), [`docs/data/DATASET_AUDIT.md`](docs/data/DATASET_AUDIT.md), [`docs/planning/SYSTEM_ARCHITECTURE.md`](docs/planning/SYSTEM_ARCHITECTURE.md)
 
 ---
 
@@ -30,7 +30,7 @@ This register documents every known area of technical debt, its current status, 
 | **TD-007** | Database | Typed columns vs JSONB for inputs & explanations | Open Decision O-011 | Querying and indexing flexibility vs schema rigidity for model input snapshots. | Phase 4 |
 | **TD-008** | Infrastructure | ML Service hosting on Render (Free/Starter tier) | Tentative (D-012, O-014) | Cold starts (30-60s) and memory exhaustion (512MB limit) could fail inference under load. | Phase 3 / 6 |
 | **TD-009** | Infrastructure | Backend-to-ML Service private networking vs Token Auth | Open Decision O-013 / P-006 | ML inference service could be accidentally exposed to the public internet if not protected. | Phase 4 / 6 |
-| **TD-010** | ML Pipeline | Target label ambiguity & data leakage risk | Open Decisions O-001, O-002, O-003 | Model predicting outcome using post-application features (target leakage) or proxy bias. | Phase 2 |
+| **TD-010** | ML Pipeline | Target label ambiguity & data leakage risk | **Resolved in Phase 2** (D-021, D-022, D-023) | Model predicting outcome using post-application features (target leakage) or proxy bias. | Phase 2 |
 | **TD-011** | ML Pipeline | Model explainability technique unbenchmarked | Open Decision O-006 | SHAP computation may introduce significant inference latency if computed synchronously in HTTP request. | Phase 3 |
 | **TD-012** | ML Pipeline | Probability calibration policy undefined | Open Decision O-007 | Raw classifier outputs may be misconstrued as true probabilities by end users. | Phase 3 |
 | **TD-013** | Operations | Error envelope & Request ID correlation format | Proposal P-005 | Inconsistent API error handling in frontend if backend responses lack unified envelope. | Phase 4 |
@@ -56,6 +56,14 @@ This register documents every known area of technical debt, its current status, 
   1. Bundling inference into the Backend API service (if model is lightweight), or
   2. Upgrading the Render instance tier, or
   3. Deploying the ML service to a serverless container platform with faster cold starts (e.g., Google Cloud Run).
+
+### TD-010: Target Label Ambiguity & Data Leakage Risk (RESOLVED — Phase 2)
+- **Status:** Resolved in Phase 2 via [`docs/data/DATASET_AUDIT.md`](docs/data/DATASET_AUDIT.md) and [`D-021`](docs/planning/DECISION_REGISTER.md), [`D-022`](docs/planning/DECISION_REGISTER.md), [`D-023`](docs/planning/DECISION_REGISTER.md).
+- **Resolution Summary:**
+  1. Selected the canonical Loan Prediction Problem benchmark dataset.
+  2. Fixed target variable to binary `Loan_Status` (`1` = Approved, `0` = Rejected), representing application-time origination outcomes (~69% approved / ~31% rejected).
+  3. Conducted temporal leakage audit: confirmed zero post-origination features exist in the candidate feature pool.
+  4. Enforced Fair Lending policy: permanently excluded protected demographic attributes (`Gender`, `Married`) to prevent historical proxy bias, establishing a clean 9-feature schema.
 
 ### TD-011: Synchronous Model Explainability Latency
 - **Description:** Generating KernelSHAP or feature attribution explanations per prediction can take hundreds of milliseconds to multiple seconds on CPU.

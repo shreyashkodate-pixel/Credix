@@ -29,17 +29,17 @@ Credix is an AI/ML-assisted loan outcome prediction web application designed to 
 
 ## Current Project Status and Roadmap
 
-The project is currently at the completion of **Phase 1 (Documentation and Planning Baseline)**. 
+The project is currently at the completion of **Phase 2 (Dataset Selection, Audit, and Licensing)**. 
 
-> **Important**: Application source code, dataset acquisition, and model training **have not started**.
+> **Important**: Application source code and model training **have not started** (deliberately scheduled for Phase 3+).
 
 ### Phased Roadmap
 
-1. **Phase 1: Planning and Requirements** *(Current — Baseline Approved, v0.1.0)*
+1. **Phase 1: Planning and Requirements** *(Complete — Baseline Approved, v0.1.0)*
    - PRD, SRS, architecture, API contracts, database design, and decision register established.
-2. **Phase 2: Dataset Selection, Audit, and Licensing** *(Upcoming)*
-   - Identify appropriately licensed loan dataset, audit target label definitions, and finalize input feature schema.
-3. **Phase 3: ML Modeling, Pipeline, and Calibration**
+2. **Phase 2: Dataset Selection, Audit, and Licensing** *(Complete — Baseline Approved, v0.2.0)*
+   - Open loan dataset vetted, target label grounded, Fair Lending exclusions applied, and 9-feature input schema locked.
+3. **Phase 3: ML Modeling, Pipeline, and Calibration** *(Upcoming)*
    - Reproducible preprocessing, baseline training, evaluation, explainability method, and artifact packaging.
 4. **Phase 4: Backend API and Database Implementation**
    - Supabase schema migrations, authentication, authorization, and ML service orchestration.
@@ -57,6 +57,13 @@ The project is currently at the completion of **Phase 1 (Documentation and Plann
 
 ---
 
+## Data & Audit Documentation
+
+Data cards, licensing, and schema specifications are maintained under [`docs/data/`](docs/data/):
+- [`docs/data/DATASET_AUDIT.md`](docs/data/DATASET_AUDIT.md) — Dataset provenance, target label semantics, leakage audit, Fair Lending policy, and 9-feature dictionary.
+
+---
+
 ## Planning Documentation
 
 Detailed specifications and architectural baselines are maintained under [`docs/planning/`](docs/planning/):
@@ -65,8 +72,8 @@ Detailed specifications and architectural baselines are maintained under [`docs/
 - [`docs/planning/PRD.md`](docs/planning/PRD.md) — Product Requirements Document (goals, personas, scope).
 - [`docs/planning/SRS.md`](docs/planning/SRS.md) — Software Requirements Specification (functional & non-functional requirements).
 - [`docs/planning/SYSTEM_ARCHITECTURE.md`](docs/planning/SYSTEM_ARCHITECTURE.md) — Multi-service architecture and request flows.
-- [`docs/planning/API_CONTRACT.md`](docs/planning/API_CONTRACT.md) — Proposed endpoint contracts and payload formats.
-- [`docs/planning/DATABASE_DESIGN.md`](docs/planning/DATABASE_DESIGN.md) — Conceptual PostgreSQL data model and indexing strategy.
+- [`docs/planning/API_CONTRACT.md`](docs/planning/API_CONTRACT.md) — Updated endpoint contracts and finalized input schema.
+- [`docs/planning/DATABASE_DESIGN.md`](docs/planning/DATABASE_DESIGN.md) — Conceptual PostgreSQL data model and input snapshot format.
 - [`docs/planning/DECISION_REGISTER.md`](docs/planning/DECISION_REGISTER.md) — Confirmed choices, proposals, and open decisions.
 - [`docs/planning/ANTIGRAVITY_HANDOFF_PROMPT.md`](docs/planning/ANTIGRAVITY_HANDOFF_PROMPT.md) — Guidelines and guardrails for Google Antigravity.
 

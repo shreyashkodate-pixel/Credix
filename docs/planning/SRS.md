@@ -1,9 +1,9 @@
 # SmartLoan Predictor — Software Requirements Specification (SRS)
 
-**Document status:** Draft for review  
-**Version:** 0.1.0  
-**Phase:** 1 — Planning and Requirements  
-**Related document:** `PRD.md`
+**Document status:** Updated specification; Phase 2 schema locked  
+**Version:** 0.2.0  
+**Phase:** 2 — Dataset Selection, Audit, and Licensing  
+**Related documents:** `PRD.md`, `docs/data/DATASET_AUDIT.md`, `DECISION_REGISTER.md`
 
 ## 1. Purpose
 
@@ -38,8 +38,8 @@ This document defines testable software requirements for SmartLoan Predictor. Re
 - **FR-007 — Admin provisioning:** Public registration shall not permit a user to self-assign administrator privileges. Admin creation/provisioning process is TBD.
 
 ### Prediction
-- **FR-008 — Prediction input:** The system shall accept only the input fields approved after the dataset audit. The final schema is TBD.
-- **FR-009 — Validation:** The backend shall validate required fields, types, ranges, allowed categories, and cross-field constraints where justified by the data specification.
+- **FR-008 — Prediction input:** The system shall accept strictly the 9 audited applicant input fields defined in [`docs/data/DATASET_AUDIT.md`](../data/DATASET_AUDIT.md) (`applicant_income`, `coapplicant_income`, `loan_amount`, `loan_amount_term`, `credit_history`, `education`, `self_employed`, `dependents`, `property_area`). Demographic attributes (`gender`, `married`) are strictly prohibited per Fair Lending compliance ([`D-023`](DECISION_REGISTER.md)).
+- **FR-009 — Validation:** The backend shall validate required fields, types, positive currency amounts, categorical enums, and allowed loan terms server-side, returning HTTP `422 Unprocessable Entity` with specific field error details for non-compliant payloads.
 - **FR-010 — Inference orchestration:** The backend shall call the ML service using a versioned, documented request/response contract.
 - **FR-011 — Prediction result:** The system shall return the predicted outcome, model version, and supported explanatory information.
 - **FR-012 — Probability display:** A numeric probability may be displayed only if evaluation demonstrates that it is appropriate and its meaning is clearly documented. Otherwise, omit it.
