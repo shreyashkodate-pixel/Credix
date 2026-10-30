@@ -1,14 +1,15 @@
 # SmartLoan Predictor — Decision Register
 
 **Document status:** Living register  
-**Version:** 0.3.0  
+**Version:** 0.4.0  
+**Last Updated:** 2026-10-30  
 **Purpose:** Keep confirmed choices separate from proposals and unresolved questions.
 
 ## 1. Confirmed decisions
 
 | ID | Decision | Rationale / notes |
 |---|---|---|
-| D-001 | Project name is SmartLoan Predictor. | Working project name. |
+| D-001 | Project name is SmartLoan Predictor (Credix). | Working project name. |
 | D-002 | Project is intended to be portfolio-quality. | Requires documentation, tests, reproducibility, security, and a working deployed flow. |
 | D-003 | Support both registered users and administrators. | Different user journeys and permission levels are required. |
 | D-004 | Use PostgreSQL as the database. | Relational storage for users, prediction history, and audit records. |
@@ -23,7 +24,7 @@
 | D-013 | Frontend must not connect directly to the database or ML service. | Keeps privileged operations and service credentials server-side. |
 | D-014 | Backend owns auth, authorization, business rules, orchestration, and database persistence. | Clear security and responsibility boundary. |
 | D-015 | ML service owns inference and model-specific preprocessing/explanation and does not access the database. | Keeps model-serving responsibilities isolated. |
-| D-016 | Prediction history must be private to each user. | Backend-enforced record ownership. |
+| D-016 | Prediction history must be private to each user. | Backend-enforced record ownership (`user_id` query scoping). |
 | D-017 | Show explanations with prediction results. | User explicitly prefers explanatory factors. Method depends on the eventual model. |
 | D-018 | Show probability only if its meaning and validity are supported by evaluation/calibration. | Avoid misleading certainty. |
 | D-019 | Google Antigravity is the primary coding IDE/AI development agent. | All implementation prompts and workflows should be tailored to Antigravity. |
@@ -36,17 +37,21 @@
 | D-026 | Use TreeSHAP for local feature attribution explanations. | Sub-15ms local attribution without slow background sampling (resolves O-006). |
 | D-027 | Display predicted approval probability alongside TreeSHAP factors. | Validated Brier score (0.1513) demonstrates solid probability calibration (resolves O-007). |
 | D-028 | Standardize artifact serialization in `ml/inference/artifacts/` (`model.joblib` and `metadata.json`). | Self-contained, version-controlled metadata ensuring traceability (resolves O-016). |
+| D-029 | Standardize all versioned backend API endpoints under `/api/v1/*`. | Clear API versioning and backward compatibility boundary (resolves P-002). Root `/health` serves liveness probes. |
+| D-030 | Use JWT Bearer tokens with native `bcrypt` password hashing for authentication. | Stateless, cross-origin compatible token auth between Vercel and Render with safe 72-byte password hashing (resolves O-008). |
+| D-031 | Implement RBAC with `user` and `admin` roles; admin endpoints require `admin` role. | Enforces administrative boundary (`403 Forbidden` for non-admin accounts; resolves O-010). Email verification deferred post-MVP (resolves O-009). |
+| D-032 | Use SQLAlchemy 2.0 ORM with Alembic migration framework for database schema management. | Explicit schema versioning and programmatic rollback capabilities across dev and prod environments (resolves P-003, O-012). |
+| D-033 | Standardize UUID strings (`uuid.uuid4()`) as primary keys across all database tables. | Prevents sequential ID harvesting and collision risks across distributed systems (resolves P-004). |
+| D-034 | Use hybrid relational schema: typed metadata columns + JSON/JSONB for input snapshots and TreeSHAP attributions. | Enables performant indexing on status/dates while preserving full fidelity of model explanations and raw inputs (resolves TD-007). |
+| D-035 | Standardize JSON error envelopes and inject `X-Request-ID` and `X-Response-Time-Ms` headers. | Consistent client error consumption and distributed request traceability (resolves P-005, FR-029). |
+| D-036 | Configure cascade deletion (`ondelete="CASCADE"`) on user foreign keys. | Guarantees clean GDPR/CCPA data cleanup when user accounts are purged (resolves O-011). |
 
 ## 2. Proposed decisions needing validation
 
 | ID | Proposal | Why not final |
 |---|---|---|
 | P-001 | Use Docker Compose for local multi-service development. | Confirm it is useful and practical for the selected stack and local environment. |
-| P-002 | Use `/api/v1` for public backend routes. | API versioning convention has not been approved. |
-| P-003 | Use a migration tool such as Alembic. | Choose when database/ORM details are finalized. |
-| P-004 | Use UUID identifiers for database records. | Candidate, not yet approved. |
-| P-005 | Use a common JSON error envelope and request correlation IDs. | Shape and status mapping still need approval. |
-| P-006 | Restrict ML calls through private networking or service-to-service authentication. | Exact mechanism depends on Render service topology and plan. |
+| P-006 | Restrict ML calls through private networking or service-to-service authentication. | Dependent on whether standalone microservice or colocation is selected for Phase 6 deployment. |
 
 ## 3. Open decisions
 
@@ -59,14 +64,14 @@
 | O-005 | Which model and preprocessing pipeline should be selected? | **Resolved by D-025** | Phase 3 |
 | O-006 | Which explanation technique is suitable for the selected model? | **Resolved by D-026** | Phase 3 |
 | O-007 | Is a probability score valid and appropriately calibrated for display? | **Resolved by D-027** | Phase 3 |
-| O-008 | Cookie-based sessions or JWT access/refresh tokens? | Open | Before auth implementation |
-| O-009 | Is email verification/password reset in the MVP? | Open | Before auth implementation |
-| O-010 | What admin operations and permissions are needed? | Open | Before admin implementation |
-| O-011 | What is the account deletion, prediction retention, and audit policy? | Open | Before database implementation |
-| O-012 | What database ORM and migration tool will be used? | Open | Before database implementation |
-| O-013 | What is the backend-to-ML service authentication/network design? | Open | Before deployment |
-| O-014 | Is Render suitable for the ML service given model size, memory, startup, and cost? | Open | Before deployment |
-| O-015 | What performance, availability, and rate-limit targets should be set? | Open | Before release |
+| O-008 | Cookie-based sessions or JWT access/refresh tokens? | **Resolved by D-030** | Phase 4 |
+| O-009 | Is email verification/password reset in the MVP? | **Resolved by D-031** (Deferred post-MVP) | Phase 4 |
+| O-010 | What admin operations and permissions are needed? | **Resolved by D-031** | Phase 4 |
+| O-011 | What is the account deletion, prediction retention, and audit policy? | **Resolved by D-036** | Phase 4 |
+| O-012 | What database ORM and migration tool will be used? | **Resolved by D-032** | Phase 4 |
+| O-013 | What is the backend-to-ML service authentication/network design? | Open | Phase 6 |
+| O-014 | Is Render suitable for the ML service given model size, memory, startup, and cost? | Open | Phase 6 |
+| O-015 | What performance, availability, and rate-limit targets should be set? | Open | Phase 6 |
 | O-016 | What is the model artifact storage, release, rollback, and retraining process? | **Resolved by D-028** | Phase 3 |
 
 ## 4. Decision change policy

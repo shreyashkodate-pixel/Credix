@@ -71,6 +71,9 @@ out/
 *.log
 *.tmp
 *.temp
+*.db
+*.sqlite
+*.sqlite3
 
 # IDE / Editor local files
 .vscode/*

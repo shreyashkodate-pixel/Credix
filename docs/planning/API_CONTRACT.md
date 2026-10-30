@@ -124,31 +124,31 @@ The response shape below is illustrative. Final fields depend on the chosen mode
 
 This is a proposed pagination envelope. The implementation must enforce a maximum page size and derive ownership from the authenticated principal. Exact history item fields are TBD after the database and privacy policy are approved.
 
-## 8. Proposed error response
+## 8. Standardized Error Response Contract
 
-A consistent envelope should be selected before implementation. Candidate:
+Standardized in Phase 4.2 (`D-035`). All application-generated error responses strictly conform to the following envelope:
 
 ```json
 {
   "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "The request contains invalid fields.",
+    "code": "ERROR_CODE",
+    "message": "Human-readable description of error.",
     "details": []
   },
-  "request_id": "correlation-id"
+  "request_id": "server-generated-request-id"
 }
 ```
 
-Possible error classes:
-- invalid request/validation error;
-- unauthenticated;
-- forbidden;
-- resource not found;
-- rate limited;
-- inference unavailable or timed out;
-- internal server error.
+Standard Status Code & Code Mappings:
+- **400 Bad Request:** `code: "BAD_REQUEST"` (e.g. duplicate email registration, inactive account)
+- **401 Unauthorized:** `code: "UNAUTHORIZED"` (e.g. invalid credentials, expired/missing JWT)
+- **403 Forbidden:** `code: "FORBIDDEN"` (e.g. non-admin accessing `/api/v1/admin/*`)
+- **404 Not Found:** `code: "NOT_FOUND"` (e.g. unowned or non-existent prediction ID)
+- **422 Unprocessable Content:** `code: "VALIDATION_ERROR"` (includes `details: [{"field": "...", "message": "..."}]`)
+- **500 Internal Server Error:** `code: "INTERNAL_SERVER_ERROR"` (unhandled server exceptions and ML inference failures)
+- **503 Service Unavailable:** `code: "SERVICE_UNAVAILABLE"` (unloaded or missing ML model artifacts)
 
-Do not expose stack traces, database details, credentials, internal URLs, or raw exception text in production responses. Exact HTTP status mapping is TBD.
+Stack traces, internal server exceptions, and secrets are strictly excluded from client error bodies. Every error response includes a trusted, server-generated `request_id` for distributed log correlation.
 
 ## 9. Authentication contract decision
 
