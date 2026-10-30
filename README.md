@@ -50,6 +50,13 @@ The project is currently at the completion of **Phase 1 (Documentation and Plann
 
 ---
 
+## Project Tracking
+
+- [`progress.md`](progress.md) — Current sprint/phase progress, completed deliverables, and next-session agenda.
+- [`technical_debt.md`](technical_debt.md) — Living register of deferred architectural choices, provisional items, and risks.
+
+---
+
 ## Planning Documentation
 
 Detailed specifications and architectural baselines are maintained under [`docs/planning/`](docs/planning/):
