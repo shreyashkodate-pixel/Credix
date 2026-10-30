@@ -1,7 +1,7 @@
 # Credix — Technical Debt & Architectural Deferred Items
 
 **Document Status:** Living Register  
-**Baseline Version:** 0.4.0  
+**Baseline Version:** 0.4.2  
 **Last Updated:** 2026-10-30  
 **Related Documents:** [`docs/planning/DECISION_REGISTER.md`](docs/planning/DECISION_REGISTER.md), [`docs/data/DATASET_AUDIT.md`](docs/data/DATASET_AUDIT.md), [`ml/README.md`](ml/README.md), [`backend/README.md`](backend/README.md)
 
