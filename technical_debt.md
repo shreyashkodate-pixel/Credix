@@ -21,7 +21,7 @@ This register documents every known area of technical debt, its current status, 
 
 | ID | Category | Item | Current Status | Risk / Impact | Target Phase |
 |---|---|---|---|---|---|
-| **TD-001** | Configuration | Service-specific `.env.example` templates | **Partially Resolved** (`backend/.env.example` completed in Phase 4) | Frontend environment template remaining. | Phase 5 |
+| **TD-001** | Configuration | Service-specific `.env.example` templates | **Resolved in Phase 5** | Both `backend/.env.example` and `frontend/.env.example` templates completed. | Phase 5 |
 | **TD-002** | API Design | API versioning prefix (`/api/v1`) | **Resolved in Phase 4** (`D-029`) | Versioned API router standardized across all endpoints. | Phase 4 |
 | **TD-003** | Security / Auth | Auth strategy: JWT Bearer Tokens | **Resolved in Phase 4** (`D-030`) | Standard Bearer JWT tokens implemented with native `bcrypt` password hashing. | Phase 4 |
 | **TD-004** | Security / Auth | Admin user provisioning & RBAC boundaries | **Resolved in Phase 4** (`D-031`) | RBAC implemented with `admin` vs `user` roles and `get_current_admin` guard. | Phase 4 |
@@ -41,9 +41,9 @@ This register documents every known area of technical debt, its current status, 
 
 ## 3. Detailed Debt Descriptions & Resolutions
 
-### TD-001: Service-Specific Environment Templates
-- **Status:** Backend completed; Frontend pending.
-- **Resolution in Phase 4:** Created [`backend/.env.example`](backend/.env.example) detailing `DATABASE_URL`, `SECRET_KEY`, `CORS_ORIGINS`, and `ML_ARTIFACTS_DIR`. [`frontend/.env.example`](frontend/.env.example) will be added during Phase 5 initialization.
+### TD-001: Service-Specific Environment Templates (RESOLVED — Phase 5)
+- **Status:** Resolved in Phase 5.
+- **Resolution:** Created [`backend/.env.example`](backend/.env.example) detailing `DATABASE_URL`, `SECRET_KEY`, `CORS_ORIGINS`, and `ML_ARTIFACTS_DIR`. Created [`frontend/.env.example`](frontend/.env.example) configuring `NEXT_PUBLIC_API_URL` for FastAPI backend communication.
 
 ### TD-002: API Versioning Prefix (RESOLVED — Phase 4)
 - **Status:** Resolved in Phase 4 via [`D-029`](docs/planning/DECISION_REGISTER.md).

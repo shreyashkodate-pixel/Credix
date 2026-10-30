@@ -1,8 +1,8 @@
 # Credix — Project Progress & Session Handoff
 
 **Project Name:** Credix (SmartLoan Predictor)  
-**Current Phase:** Phase 4 & 4.2 Approved (Backend Hardening Complete) → Transitioning to Phase 5 (Frontend UI & Integration)  
-**Baseline Version:** 0.4.2  
+**Current Phase:** Phase 5 Approved (Frontend UI & Integration Complete) → Transitioning to Phase 6 (Verification, Hardening & Cloud Deployment)  
+**Baseline Version:** 0.5.0  
 **Last Updated:** 2026-10-30  
 
 ---
@@ -11,7 +11,7 @@
 
 Credix is an AI/ML-assisted loan outcome prediction web application designed to demonstrate an end-to-end, portfolio-quality software architecture. The platform enables registered users to submit loan-related applicant data, receive model-generated outcome predictions accompanied by clear explanatory factors, and inspect their personal prediction history with strict ownership controls.
 
-Phase 1 (Planning Baseline), Phase 2 (Dataset Selection, Audit, and Licensing), Phase 3 & 3.1 (ML Modeling, Pipeline, Calibration & Final Audit Corrections), and Phase 4, 4.1 & 4.2 (Backend API, Database Implementation, Independent Audit & Hardening Remediation) are **100% complete, verified, approved, and passing all automated test suites (12/12 tests)**.
+Phase 1 (Planning Baseline), Phase 2 (Dataset Selection, Audit, and Licensing), Phase 3 & 3.1 (ML Modeling, Pipeline, Calibration & Final Audit Corrections), Phase 4, 4.1 & 4.2 (Backend API, Database Implementation, Independent Audit & Hardening Remediation), and Phase 5 (Frontend UI & Integration with Next.js 14, GSAP, Framer Motion, and Anti-Slop Institutional Design) are **100% complete, verified, approved, and passing all automated test suites (12/12 backend tests, 10/10 static frontend routes compiled)**.
 
 ---
 
@@ -100,35 +100,54 @@ Phase 1 (Planning Baseline), Phase 2 (Dataset Selection, Audit, and Licensing), 
 
 ---
 
-## 7. Current Project State
+## 7. Phase 5 Accomplishments (Frontend UI & Integration)
 
-- **Baseline Version:** `0.4.2`
-- **Application Backend Code:** 100% complete, hardened, and verified with 12/12 integration tests passing.
-- **ML Subsystem:** 100% complete and integrated.
-- **Database Status:** Local SQLite fallback (`credix_dev.db`) initialized and fully migrated; live Supabase PostgreSQL staging migration scheduled for Phase 6 (`TD-015`).
-- **Next Target:** Phase 5 — Frontend UI & Integration (Next.js 14+ with TypeScript and Tailwind CSS).
+1. **Next.js 14+ App Router Architecture (`frontend/`)**:
+   - Initialized Next.js 14.2.15 with TypeScript, Tailwind CSS, and strict ESLint configuration.
+   - Built typed API client (`frontend/src/lib/api.ts`) with standardized error envelope parsing (`D-035`) and `X-Request-ID` extraction.
+   - Resolved `TD-001` with `frontend/.env.example` and `frontend/.env.local` pointing to `NEXT_PUBLIC_API_URL`.
+2. **Anti-Slop Institutional Aesthetic**:
+   - Applied modern financial terminal design (Linear / Stripe inspired): deep monochrome zinc surfaces, 1px hairline borders, `GeistMono` tabular numerals (`tabular-nums font-mono`), and high information density.
+   - Eliminated AI cliches: zero purple/cyan neon gradients, zero fake laser/scanner delays, zero floating sparkles (`✨`).
+3. **Motion & Microinteraction Orchestration**:
+   - **GSAP (`@gsap/react` / `useGSAP`)**: Calibrated probability meter fill (`power2.out`) and rolling numeric counter (`0.0%` → `target%`), with staggered diverging TreeSHAP attribution bars.
+   - **Framer Motion**: Snappy physics-based navigation indicators (`layoutId`), modal/drawer slide-overs (`stiffness: 350, damping: 35`), and tactile button compressions.
+4. **9-Feature Underwriting Ledger & Fair Lending Enforcement**:
+   - Built 3-column structured input ledger for all 9 audited features with live client bounds validation and keyboard shortcuts (`⌘ + Enter`).
+   - Strict omission of prohibited demographic inputs (`Gender`, `Married`, `Race`, `Sex`) with prominent ECOA Fair Lending disclosure notice.
+   - One-click benchmarking presets for Prime and Subprime profiles.
+5. **Interactive TreeSHAP Feature Attribution Inspector**:
+   - Diverging horizontal bar chart anchored to zero-baseline (+ Emerald / - Rose) with exact mathematical weights and plain-language financial narratives.
+   - Displays evaluation metadata: model version, record UUID, and request correlation ID.
+6. **Immutable Personal Audit History & Inspection Drawer**:
+   - Paginated historical submissions table scoped strictly to the authenticated user (`D-016`).
+   - Smooth slide-over detail drawer showing exact applicant input snapshots and TreeSHAP factors.
+7. **Role-Gated Administrative Console (`/admin`)**:
+   - Telemetry dashboard with platform KPIs: Total Registered Users, Total Evaluations, Approval Ratio (%), and user directory.
+8. **100% Clean Production Build**:
+   - Prerendered 10/10 static pages with 0 TypeScript and 0 ESLint errors.
 
 ---
 
-## 8. Phase 5 Agenda (Frontend UI & Integration)
+## 8. Current Project State
 
-The immediate next objective is **Phase 5: Frontend UI & Integration**:
+- **Baseline Version:** `0.5.0`
+- **Frontend Subsystem (`frontend/`):** 100% complete, verified with Next.js 14 production build (`next build`) passing cleanly across all 10 routes.
+- **Backend API (`backend/`):** 100% complete, hardened, and verified with 12/12 integration tests passing.
+- **ML Subsystem (`ml/`):** 100% complete, champion Random Forest model + TreeSHAP explainability engine verified.
+- **Database Status:** Local SQLite fallback (`credix_dev.db`) initialized and fully migrated; live Supabase PostgreSQL staging migration scheduled for Phase 6 (`TD-015`).
+- **Next Target:** Phase 6 — Verification, Hardening & Cloud Deployment (Render + Supabase + Vercel).
 
-1. **Next.js 14+ Project Initialization (`frontend/`)**:
-   - Initialize Next.js with App Router, TypeScript, Tailwind CSS, and ESLint.
-   - Configure proxy/API client targeting FastAPI (`http://localhost:8000/api/v1`).
-2. **Authentication UI & State Management**:
-   - Build login and registration pages with form validation.
-   - Implement JWT token storage (secure client-side cookies or memory/context).
-   - Implement protected route middleware.
-3. **9-Feature Loan Application Form**:
-   - Build accessible, user-friendly form collecting the audited 9 features with client-side bounds checking.
-   - Strict omission of any gender/marital status inputs.
-4. **Prediction Result & TreeSHAP Visualization Component**:
-   - Outcome badge (`Approved` vs. `Rejected`).
-   - Calibrated probability meter with clear confidence indicator.
-   - Visual TreeSHAP factor cards (green positive / red negative impact bars, friendly factor explanations).
-5. **Personal Prediction History Dashboard**:
-   - Paginated historical submissions table showing dates, outcomes, probabilities, and detail modal/drill-down.
-6. **Admin Dashboard Screen**:
-   - High-level overview displaying aggregate user and prediction statistics.
+---
+
+## 9. Phase 6 Agenda (Verification, Hardening & Cloud Deployment)
+
+1. **Staging Database Verification (`TD-015`)**:
+   - Apply Alembic migrations to live Supabase PostgreSQL instance and verify connection pooling / SSL.
+2. **Cloud Backend & ML Deployment**:
+   - Configure Render deployment for FastAPI backend (`render.yaml` or Dockerfile).
+   - Resolve ML hosting topology decision (`TD-008`, `O-014`).
+3. **Frontend Vercel Deployment**:
+   - Configure Vercel project with `NEXT_PUBLIC_API_URL` pointing to the deployed Render backend API.
+4. **End-to-End Live Health Checks & Final Verification**:
+   - Execute live synthetic applicant evaluations across Vercel frontend → Render backend → Supabase PostgreSQL.

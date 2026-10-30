@@ -1,8 +1,8 @@
 # Antigravity Handoff — Credix (SmartLoan Predictor) Repository Memory & State
 
 **Project Name:** Credix (SmartLoan Predictor)  
-**Baseline Version:** v0.4.2 (Phases 1, 2, 3, 3.1, 4, 4.1 & 4.2 Complete & Approved)  
-**Next Objective:** Phase 5 — Frontend UI & Integration (Next.js 14+, TypeScript, Tailwind CSS)  
+**Baseline Version:** v0.5.0 (Phases 1, 2, 3, 3.1, 4, 4.1, 4.2 & 5 Complete & Approved)  
+**Next Objective:** Phase 6 — Verification, Hardening & Cloud Deployment (Render, Supabase, Vercel)  
 **Last Updated:** 2026-10-30  
 
 ---
@@ -64,6 +64,7 @@
 
 ## 4. Subsystems Status & Test Evidence
 
+- **Frontend Subsystem (`frontend/`):** 100% verified. Next.js 14 App Router, TypeScript, Tailwind CSS, GSAP, Framer Motion, and anti-slop institutional UI. Production build passes 10/10 static routes with zero warnings.
 - **ML Pipeline (`ml/`):** 100% verified. Evaluated across 5-fold CV (`ROC-AUC: 0.7639`, `Brier: 0.1513`). TreeSHAP local attribution runtime: ~0.61 ms.
 - **Backend API (`backend/`):** 100% verified. 12 automated integration tests in [`backend/tests/test_backend_api.py`](../../backend/tests/test_backend_api.py) passing 100%.
 - **Database (`backend/alembic/`):** Migration `001_initial_schema.py` defines `users`, `prediction_records`, and `audit_events`.
@@ -74,7 +75,7 @@
   - [`docs/backend/PHASE_4_1_BACKEND_AUDIT_REPORT.md`](../backend/PHASE_4_1_BACKEND_AUDIT_REPORT.md)
   - [`docs/backend/PHASE_4_2_BACKEND_HARDENING_REPORT.md`](../backend/PHASE_4_2_BACKEND_HARDENING_REPORT.md)
 - **Known Deferred Items (`technical_debt.md`):**
-  - `TD-001`: Frontend `.env.example` template (Phase 5).
+  - `TD-001`: Service-specific environment templates (**Resolved in Phase 5**).
   - `TD-008` & `TD-014`: ML hosting topology on Render (Phase 6).
   - `TD-015`: Live Supabase PostgreSQL staging migration & connection verification (Phase 6).
 
@@ -83,12 +84,15 @@
 ## 5. Verification Commands for Subsequent Sessions
 
 ```bash
-# Activate virtual environment
+# 1. Run backend integration test suite (12 tests)
 source .venv/bin/activate
+pytest backend/tests/test_backend_api.py -v
 
-# Execute backend integration test suite (12 tests)
-PYTHONUNBUFFERED=1 MPLCONFIGDIR=/tmp/matplotlib pytest backend/tests/test_backend_api.py -v
-
-# Run local FastAPI dev server
+# 2. Run local FastAPI dev server (port 8000)
 uvicorn backend.app.main:app --reload --port 8000
+
+# 3. Build & start Next.js 14 frontend (port 3000)
+cd frontend
+npm run build
+npm run dev
 ```
