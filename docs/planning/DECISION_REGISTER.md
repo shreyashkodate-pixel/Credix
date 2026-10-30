@@ -1,7 +1,7 @@
 # SmartLoan Predictor — Decision Register
 
 **Document status:** Living register  
-**Version:** 0.4.0  
+**Version:** 0.5.0  
 **Last Updated:** 2026-10-30  
 **Purpose:** Keep confirmed choices separate from proposals and unresolved questions.
 
@@ -45,6 +45,8 @@
 | D-034 | Use hybrid relational schema: typed metadata columns + JSON/JSONB for input snapshots and TreeSHAP attributions. | Enables performant indexing on status/dates while preserving full fidelity of model explanations and raw inputs (resolves TD-007). |
 | D-035 | Standardize JSON error envelopes and inject `X-Request-ID` and `X-Response-Time-Ms` headers. | Consistent client error consumption and distributed request traceability (resolves P-005, FR-029). |
 | D-036 | Configure cascade deletion (`ondelete="CASCADE"`) on user foreign keys. | Guarantees clean GDPR/CCPA data cleanup when user accounts are purged (resolves O-011). |
+| D-037 | Use Next.js 14+ (App Router), TypeScript, Tailwind CSS, GSAP, and Framer Motion for frontend. | Combines high-density institutional fintech design (anti-slop) with precision GSAP tickers and snappy Framer Motion transitions (resolves Phase 5 design). |
+| D-038 | Enforce ECOA Fair Lending and 9-feature client validation on loan application form. | Replicates backend Pydantic bounds, excludes sensitive demographic fields, and displays compliance notices. |
 
 ## 2. Proposed decisions needing validation
 

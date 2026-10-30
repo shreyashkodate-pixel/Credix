@@ -29,9 +29,9 @@ Credix is an AI/ML-assisted loan outcome prediction web application designed to 
 
 ## Current Project Status and Roadmap
 
-The project is currently at the completion of **Phase 3 (ML Modeling, Pipeline, and Calibration)**. 
+The project is currently at the completion of **Phase 5 (Frontend UI and Integration)**. 
 
-> **Current State**: The ML training and inference subsystem is fully implemented, verified, and packaged under [`ml/`](ml/). Backend API and database implementation will begin in Phase 4.
+> **Current State**: The full-stack system is fully implemented and operational locally. The Next.js 14 frontend, FastAPI backend API, champion Random Forest model, TreeSHAP explainability engine, and SQLite/PostgreSQL schema migrations are complete, passing all automated test suites and static build verifications.
 
 ### Phased Roadmap
 
@@ -41,12 +41,12 @@ The project is currently at the completion of **Phase 3 (ML Modeling, Pipeline, 
    - Open loan dataset vetted, target label grounded, Fair Lending exclusions applied, and 9-feature input schema locked.
 3. **Phase 3: ML Modeling, Pipeline, and Calibration** *(Complete — Baseline Approved, v0.3.0)*
    - Enterprise MLOps structure established, champion Random Forest model trained, TreeSHAP explainability integrated, and artifacts packaged.
-4. **Phase 4: Backend API and Database Implementation** *(Upcoming)*
-   - Supabase schema migrations, authentication, authorization, and ML service orchestration.
-5. **Phase 5: Frontend UI and Integration**
-   - Responsive user interface, prediction workflows, history dashboard, and admin views.
-6. **Phase 6: Verification, Hardening, and Deployment**
-   - Automated testing, security checks, end-to-end verification, and live cloud deployments.
+4. **Phase 4, 4.1 & 4.2: Backend API, Hardening, and Database** *(Complete — Baseline Approved, v0.4.2)*
+   - FastAPI REST API, SQLAlchemy 2.0 ORM, Alembic migrations, JWT authentication, RBAC, atomic ML persistence, OWASP security headers, and request ID tracing.
+5. **Phase 5: Frontend UI and Integration** *(Complete — Baseline Approved, v0.5.0)*
+   - Next.js 14 App Router, TypeScript, Tailwind CSS, GSAP probability tickers and TreeSHAP attribution bars, Framer Motion microinteractions, 9-feature loan form with ECOA Fair Lending exclusion, personal audit history drawer, and admin telemetry console.
+6. **Phase 6: Verification, Hardening, and Deployment** *(Upcoming)*
+   - Supabase staging migration, Render backend hosting, Vercel frontend deployment, and live end-to-end integration tests.
 
 ---
 
